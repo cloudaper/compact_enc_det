@@ -1,6 +1,7 @@
 require "mkmf"
 
-unless system("cd compact_enc_det && ./autogen.sh")
+compact_enc_det_path = File.expand_path("../compact_enc_det/compact_enc_det", __dir__)
+unless system("cd #{compact_enc_det_path} && ./autogen.sh")
   raise "Failed to build the compact_enc_det library"
 end
 
