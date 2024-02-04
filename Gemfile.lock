@@ -1,0 +1,21 @@
+PATH
+  remote: .
+  specs:
+    compact_enc_det (0.1.0)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rake (13.1.0)
+    rake-compiler (1.2.7)
+      rake
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  compact_enc_det!
+  rake-compiler (~> 1.0)
+
+BUNDLED WITH
+   2.4.10
