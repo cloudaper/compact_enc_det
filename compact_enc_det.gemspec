@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.licenses = ["MIT", "Apache-2.0"]
 
   spec.extensions = ["ext/compact_enc_det/extconf.rb"]
-  spec.files = Dir["ext/**/*", "lib/**/*"]
+  spec.files = Dir["ext/**/*", "lib/**/*", "README.md", "LICENSE", "LICENSE-APACHE"]
 
   spec.require_paths = ["lib"]
 
