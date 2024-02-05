@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    compact_enc_det (0.2.0)
+    compact_enc_det (0.3.0)
 
 GEM
   remote: https://rubygems.org/
