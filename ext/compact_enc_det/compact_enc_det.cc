@@ -1,5 +1,6 @@
 #include <ruby.h>
 #include "compact_enc_det/compact_enc_det/compact_enc_det.h"
+#include "compact_enc_det/util/encodings/encodings.h"
 
 // Define custom Ruby class CompactEncDet::DetectEncodingResult
 // for the result of CompactEncDet.detect_encoding
@@ -75,10 +76,17 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
       NIL_P(ignore_7bit_mail_encodings) ? false : RTEST(ignore_7bit_mail_encodings),
       &bytes_consumed,
       &is_reliable);
+  
+  // Convert the encoding enum to string using MimeEncodingName
+  const char* encoding_mime_name = MimeEncodingName(encoding);
+  VALUE rb_encoding_mime_name = rb_str_new_cstr(encoding_mime_name);
+  
+  // Find the Ruby Encoding class
+  VALUE rb_encoding = rb_funcall(rb_cEncoding, rb_intern("find"), 1, rb_encoding_mime_name);
 
   // Return the detected encoding as a Ruby class
   VALUE result = rb_class_new_instance(0, NULL, rb_cDetectEncodingResult);
-  rb_iv_set(result, "@encoding", rb_int_new(encoding));
+  rb_iv_set(result, "@encoding", rb_encoding);
   rb_iv_set(result, "@bytes_consumed", rb_int_new(bytes_consumed));
   rb_iv_set(result, "@is_reliable", is_reliable ? Qtrue : Qfalse);
   return result;

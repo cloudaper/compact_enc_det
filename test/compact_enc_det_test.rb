@@ -6,7 +6,7 @@ class CompactEncDetTest < Minitest::Test
     text = File.read("test/fixtures/utf-8.txt")
     result = CompactEncDet.detect_encoding(text, text.bytesize)
 
-    assert_equal 22, result.encoding
+    assert_equal Encoding::UTF_8, result.encoding
     assert_operator 0, :<, result.bytes_consumed
     assert_equal true, result.is_reliable?
   end
