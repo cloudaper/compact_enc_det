@@ -1,0 +1,52 @@
+name: Build & push
+on:
+  release:
+    types: [published]
+jobs:
+  build:
+    name: Build the gem
+    runs-on: ubuntu-latest
+    outputs:
+      gem-package-name: ${{ steps.name-setter.outputs.gem-package-name }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+          bundler-cache: true
+      - name: Set up CMake
+        uses: lukka/get-cmake@latest
+      - name: Build the gem
+        run: gem build compact_enc_det.gemspec
+      - name: Retrieve the gem version
+        id: version-retreiver
+        run: echo "gem-version=$(ruby -r ./lib/compact_enc_det/version.rb -e 'puts CompactEncDet::VERSION')" >> $GITHUB_OUTPUT
+      - name: Set the gem package name
+        id: name-setter
+        run: echo "gem-package-name=compact_enc_det-${{ steps.version-retreiver.outputs.gem-version }}.gem" >> $GITHUB_OUTPUT
+      - name: Upload the gem artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.name-setter.outputs.gem-package-name }}
+          path: ${{ steps.name-setter.outputs.gem-package-name }}
+  publish:
+    name: Push the gem to RubyGems.org
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+      - name: Download the gem artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ needs.build.outputs.gem-package-name }}
+      - name: Push to RubyGems.org
+        env:
+          GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+        run: gem push ${{ needs.build.outputs.gem-package-name }}
