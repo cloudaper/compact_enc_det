@@ -3,11 +3,8 @@ require "rbconfig"
 
 compact_enc_det_path = File.expand_path("../compact_enc_det/compact_enc_det", __dir__)
 
-host_cpu = RbConfig::CONFIG['host_cpu']
-is_amd64 = host_cpu == 'x86_64' || host_cpu == 'amd64'
-
 compact_enc_det_build_command = "cd #{compact_enc_det_path} &&"
-compact_enc_det_build_command += " CXXFLAGS=\"-fPIC\"" if is_amd64
+compact_enc_det_build_command += " CXXFLAGS=\"-fPIC\""
 compact_enc_det_build_command += " ./autogen.sh"
 
 unless system(compact_enc_det_build_command)
