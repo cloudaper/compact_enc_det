@@ -32,7 +32,7 @@ which is a thin wrapper around `CompactEncDet::DetectEncoding` and `MimeEncoding
 
 > ```ruby
 > file = File.read("unknown-encoding.txt")
-> result = CompactEncDet.detect_encoding(file, file.bytesize)
+> result = CompactEncDet.detect_encoding(file)
 > result.encoding
 > # => #<Encoding:Windows-1250>
 > result.bytes_consumed

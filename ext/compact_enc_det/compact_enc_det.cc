@@ -34,8 +34,8 @@ void Init_detect_encoding_result(VALUE rb_mCompactEncDet)
 // for the CompactEncDet::DetectEncoding C++ function
 static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
 {
-  VALUE ruby_text,
-      ruby_text_length,
+  VALUE text,
+      text_length,
       url_hint,
       http_charset_hint,
       meta_charset_hint,
@@ -45,9 +45,9 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
       ignore_7bit_mail_encodings;
 
   // Parse the Ruby arguments
-  rb_scan_args(argc, argv, "27",
-               &ruby_text,
-               &ruby_text_length,
+  rb_scan_args(argc, argv, "17",
+               &text,
+               &text_length,
                &url_hint,
                &http_charset_hint,
                &meta_charset_hint,
@@ -56,9 +56,9 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
                &corpus_type,
                &ignore_7bit_mail_encodings);
 
-  // Convert the Ruby values to C types
-  const char *text = StringValueCStr(ruby_text);
-  const int text_length = NUM2INT(ruby_text_length);
+  // Convert the Ruby arguments to C++ types
+  const char* c_text = StringValueCStr(text);
+  const int c_text_length = NIL_P(text_length) ? strlen(c_text) : NUM2INT(text_length);
 
   // Declare the output variables
   int bytes_consumed;
@@ -66,7 +66,8 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
 
   // Detect the encoding using CompactEncDet::DetectEncoding
   Encoding encoding = CompactEncDet::DetectEncoding(
-      text, text_length,
+      c_text,
+      c_text_length,
       NIL_P(url_hint) ? nullptr : StringValueCStr(url_hint),
       NIL_P(http_charset_hint) ? nullptr : StringValueCStr(http_charset_hint),
       NIL_P(meta_charset_hint) ? nullptr : StringValueCStr(meta_charset_hint),
@@ -76,11 +77,11 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
       NIL_P(ignore_7bit_mail_encodings) ? false : RTEST(ignore_7bit_mail_encodings),
       &bytes_consumed,
       &is_reliable);
-  
+
   // Convert the encoding enum to string using MimeEncodingName
   const char* encoding_mime_name = MimeEncodingName(encoding);
   VALUE rb_encoding_mime_name = rb_str_new_cstr(encoding_mime_name);
-  
+
   // Find the Ruby Encoding class
   VALUE rb_encoding = rb_funcall(rb_cEncoding, rb_intern("find"), 1, rb_encoding_mime_name);
 
