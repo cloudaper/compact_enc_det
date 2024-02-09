@@ -56,14 +56,18 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
                &corpus_type,
                &ignore_7bit_mail_encodings);
 
+  // Convert the Ruby arguments to C++ types
+  const char* c_text = StringValueCStr(text);
+  const int c_text_length = NIL_P(text_length) ? strlen(c_text) : NUM2INT(text_length);
+
   // Declare the output variables
   int bytes_consumed;
   bool is_reliable;
 
   // Detect the encoding using CompactEncDet::DetectEncoding
   Encoding encoding = CompactEncDet::DetectEncoding(
-      StringValueCStr(text),
-      NIL_P(text_length) ? strlen(StringValueCStr(text)) : NUM2INT(text_length),
+      c_text,
+      c_text_length,
       NIL_P(url_hint) ? nullptr : StringValueCStr(url_hint),
       NIL_P(http_charset_hint) ? nullptr : StringValueCStr(http_charset_hint),
       NIL_P(meta_charset_hint) ? nullptr : StringValueCStr(meta_charset_hint),
