@@ -34,8 +34,8 @@ void Init_detect_encoding_result(VALUE rb_mCompactEncDet)
 // for the CompactEncDet::DetectEncoding C++ function
 static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
 {
-  VALUE ruby_text,
-      ruby_text_length,
+  VALUE text,
+      text_length,
       url_hint,
       http_charset_hint,
       meta_charset_hint,
@@ -45,9 +45,9 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
       ignore_7bit_mail_encodings;
 
   // Parse the Ruby arguments
-  rb_scan_args(argc, argv, "27",
-               &ruby_text,
-               &ruby_text_length,
+  rb_scan_args(argc, argv, "17",
+               &text,
+               &text_length,
                &url_hint,
                &http_charset_hint,
                &meta_charset_hint,
@@ -56,17 +56,14 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
                &corpus_type,
                &ignore_7bit_mail_encodings);
 
-  // Convert the Ruby values to C types
-  const char *text = StringValueCStr(ruby_text);
-  const int text_length = NUM2INT(ruby_text_length);
-
   // Declare the output variables
   int bytes_consumed;
   bool is_reliable;
 
   // Detect the encoding using CompactEncDet::DetectEncoding
   Encoding encoding = CompactEncDet::DetectEncoding(
-      text, text_length,
+      StringValueCStr(text),
+      NIL_P(text_length) ? strlen(StringValueCStr(text)) : NUM2INT(text_length),
       NIL_P(url_hint) ? nullptr : StringValueCStr(url_hint),
       NIL_P(http_charset_hint) ? nullptr : StringValueCStr(http_charset_hint),
       NIL_P(meta_charset_hint) ? nullptr : StringValueCStr(meta_charset_hint),
