@@ -19,4 +19,13 @@ class CompactEncDetTest < Minitest::Test
     assert_operator 0, :<, result.bytes_consumed
     assert_equal true, result.is_reliable?
   end
+
+  def test_detect_encoding_with_null_bytes
+    text = File.read("test/fixtures/utf-16.txt")
+    result = CompactEncDet.detect_encoding(text)
+
+    assert_equal Encoding::UTF_16LE, result.encoding
+    assert_operator 0, :<, result.bytes_consumed
+    assert_equal true, result.is_reliable?
+  end
 end
