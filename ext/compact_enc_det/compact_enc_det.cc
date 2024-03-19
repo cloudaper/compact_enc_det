@@ -56,9 +56,12 @@ static VALUE detect_encoding(int argc, VALUE *argv, VALUE self)
                &corpus_type,
                &ignore_7bit_mail_encodings);
 
+  // Ensure the text argument is a Ruby string
+  Check_Type(text, T_STRING);
+
   // Convert the Ruby arguments to C++ types
-  const char* c_text = StringValueCStr(text);
-  const int c_text_length = NIL_P(text_length) ? strlen(c_text) : NUM2INT(text_length);
+  const char* c_text = RSTRING_PTR(text);
+  const int c_text_length = NIL_P(text_length) ? RSTRING_LEN(text) : NUM2INT(text_length);
 
   // Declare the output variables
   int bytes_consumed;
