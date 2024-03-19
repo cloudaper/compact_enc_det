@@ -31,7 +31,7 @@ Now you can detect the encoding via the `CompactEncDet.detect_encoding`,
 which is a thin wrapper around `CompactEncDet::DetectEncoding` and `MimeEncodingName` functions from the C++ library.
 
 > ```ruby
-> file = File.read("unknown-encoding.txt")
+> file = File.read("unknown-encoding.txt", mode: "rb")
 > result = CompactEncDet.detect_encoding(file)
 > result.encoding
 > # => #<Encoding:Windows-1250>
