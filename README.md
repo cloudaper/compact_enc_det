@@ -19,7 +19,7 @@ Then you can install the gem from [RubyGems.org](https://rubygems.org/gems/compa
 > Either add this to your Gemfile:
 >
 > ```ruby
-> gem 'compact_enc_det', '~> 0.1'
+> gem 'compact_enc_det', '~> 1.0'
 > ```
 > or run the following command to install it:
 >
