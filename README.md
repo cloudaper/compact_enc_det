@@ -4,7 +4,7 @@ Ruby bindings for [Google's Compact Encoding Detection](https://github.com/googl
 
 ## Usage
 
-You will need [CMake](https://cmake.org) to build the C++ native extension.
+You will need [curl](https://curl.se) and [CMake](https://cmake.org) to build the C++ native extension.
 
 >  macOS
 > 
