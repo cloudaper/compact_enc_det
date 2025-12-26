@@ -2,9 +2,12 @@
 
 Ruby bindings for [Google's Compact Encoding Detection](https://github.com/google/compact_enc_det) (CED for short) C++ library
 
+> [!NOTE]
+> Bindings temporarily use a [fork of the C++ library](https://github.com/cloudaper/compact_enc_det_fork/commit/e4eda3204bab019564b96c522baae93ee2fffdc8), which fixes the minimum CMake version for the build to pass on modern environments.
+
 ## Usage
 
-You will need [CMake](https://cmake.org) to build the C++ native extension.
+You will need [curl](https://curl.se) and [CMake](https://cmake.org) to build the C++ native extension.
 
 >  macOS
 > 
@@ -27,8 +30,7 @@ Then you can install the gem from [RubyGems.org](https://rubygems.org/gems/compa
 > gem install compact_enc_det
 > ```
 
-Now you can detect the encoding via the `CompactEncDet.detect_encoding`,
-which is a thin wrapper around `CompactEncDet::DetectEncoding` and `MimeEncodingName` functions from the C++ library.
+Now you can detect the encoding via the `CompactEncDet.detect_encoding`, which is a thin wrapper around `CompactEncDet::DetectEncoding` and `MimeEncodingName` functions from the C++ library.
 
 > ```ruby
 > file = File.read("unknown-encoding.txt", mode: "rb")
@@ -75,5 +77,4 @@ Tests located at `tests` use the [minitest](https://github.com/minitest/minitest
 
 ## License
 
-This gem is released under [MIT license](LICENSE), while the original Google's [Compact Encoding Detection library](https://github.com/google/compact_enc_det) source code,
-located at `ext/compact_enc_det/compact_enc_det`, is under the [Apache-2.0](LICENSE-APACHE) license.
+This gem is released under [MIT license](LICENSE), while the original Google's [Compact Encoding Detection library](https://github.com/google/compact_enc_det) source code, located at `ext/compact_enc_det/compact_enc_det`, is under the [Apache-2.0](LICENSE-APACHE) license.
