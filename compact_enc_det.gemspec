@@ -5,7 +5,6 @@ require "compact_enc_det/version"
 Gem::Specification.new do |spec|
   spec.name = "compact_enc_det"
   spec.version = CompactEncDet::VERSION
-  spec.date = "2024-02-04"
   spec.authors = ["Cloudaper", "Kryštof Korb"]
   spec.email = ["hey@cloudaper.dev", "krystof@korb.cz"]
   spec.summary = "Compact Encoding Detection"
